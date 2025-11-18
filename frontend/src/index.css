@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  .sidebar,
+  #sidebar,
+  .app-sidebar,
+  .drawer,
+  .MuiDrawer-root,
+  .no-print {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Expand main content to full width */
+  .content,
+  #content,
+  .main,
+  #main,
+  main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}
+
+
