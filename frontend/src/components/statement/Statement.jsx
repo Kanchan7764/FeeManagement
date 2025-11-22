@@ -33,7 +33,7 @@ const PaymentStatementPage = () => {
     } catch (error) {
       console.error("Error fetching statement:", error);
       setData(null);
-      setMessage("No data found or you do not have access!");
+      setMessage("No data fee record found for this !");
     }
   };
 

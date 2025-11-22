@@ -11,7 +11,7 @@ import {
   getStudentById,
   deleteStudent,
   getrollNo,
-  updateStudentStatus,getStudentByUserId,getStudentForId
+  updateStudentStatus,getStudentByUserId,getStudentForId,getStudentsByClass
 } from '../controllers/studentController.js';
 
 const router = express.Router();
@@ -24,6 +24,8 @@ router.get('/next-roll/:classId', getrollNo);
 
 // ✅ Get all students
 router.get('/', authMiddleware, getStudents);
+
+router.get("/byclass/:classId", getStudentsByClass);
 
 // ✅ Get student by MongoDB _id
 

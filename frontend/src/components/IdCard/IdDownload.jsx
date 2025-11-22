@@ -49,10 +49,7 @@ useEffect(() => {
     navigate("/student-dashboard");
   }
 
-  // Option 2: if role is stored in localStorage under key "role"
-  // const role = localStorage.getItem("role");
-  // if (role === "admin") navigate("/admin-dashboard");
-  // else navigate("/student-dashboard");
+  
 };
 
 

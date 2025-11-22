@@ -27,8 +27,8 @@ export const fetchClass = async () => {
       },
     });
 
-    if (response.data.success && Array.isArray(response.data.classes)) {
-      return response.data.classes;
+    if (response.data.success && Array.isArray(response.data.data)) {
+      return response.data.data;
     } else {
       return [];
     }

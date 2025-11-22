@@ -27,6 +27,61 @@ const upload = multer({storage:storage})
 
 // controllers/studentController.js
 
+
+
+
+
+export const getStudentsByClass = async (req, res) => {
+  try {
+    const className = req.params.classId; // receiving className
+    console.log("Received className:", className);
+
+    if (!className) {
+      return res.status(400).json({
+        success: false,
+        message: "Class name is required",
+      });
+    }
+
+    // Find class by class_name
+    const classData = await Class.findOne({ class_name: className });
+
+    if (!classData) {
+      return res.status(404).json({
+        success: false,
+        message: "Class not found",
+      });
+    }
+
+    console.log("Mapped classId:", classData._id);
+
+    // Fetch students + populate userId → name
+    const students = await Student.find({ classs: classData._id })
+      .populate({
+        path: "userId",
+        select: "name",   // get only name
+      })
+      .select("rollNo userId"); // include rollNo & userId only
+
+    return res.status(200).json({
+      success: true,
+      count: students.length,
+      data: students,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch students by class",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+
 export const getStudentByStudentId = async (req, res) => {
   console.log("Controller hit with studentId:", req.params.studentId); // <-- access studentId
   try {

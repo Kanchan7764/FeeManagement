@@ -3,14 +3,22 @@ import Class from "../models/Class.js";
 const getClasses = async (req, res) => {
   try {
     const classes = await Class.find();
-    // console.log(classes)
-    return res.status(200).json({ success: true, classes });
+    // console.log(classes);
+
+    return res.status(200).json({
+      success: true,
+      count: classes.length,
+      data: classes
+    });
+
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, error: "get class server error" });
+    return res.status(500).json({
+      success: false,
+      error: "get class server error"
+    });
   }
 };
+
 
 const addClass = async (req, res) => {
   try {

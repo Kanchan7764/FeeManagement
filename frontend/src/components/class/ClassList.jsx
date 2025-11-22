@@ -26,7 +26,7 @@ const ClassList = () => {
         });
         if (response.data.success) {
           let sno = 1;
-          const data = await response.data.classes.map((cls) => ({
+          const data = response.data.data.map((cls) => ({
             _id: cls._id,
             sno: sno++,
             class_name: cls.class_name,

@@ -27,6 +27,15 @@ import StatementDownload from "./components/statement/StatementDownload";
 import StudentIDCard from "./components/IdCard/StudentId";
 import IdDownload from "./components/IdCard/IdDownload";
 import StudentIDDownload from "./components/IdCard/IdIndividial";
+import AddSubjectPage from "./components/subject/Subject";
+import AddTeacherPage from "./components/Teacher/AddTeacher";
+import TeacherListPage from "./components/Teacher/TeacherList";
+import SubjectListPage from "./components/subject/SubjectList";
+import AddExamPage from "./components/Exam/AddExam";
+import ExamListPage from "./components/Exam/ExamList";
+import AddMarksPage from "./components/Marks/Addmarks";
+import ProgressCard from "./components/progress_Card/ProgressCard";
+import SearchProgressPage from "./components/progress_Card/SearchProgress";
 
 function App() {
   return (
@@ -76,7 +85,7 @@ function App() {
           <Route path="/admin-dashboard/fee/all" element={<ViewAllFees />} />
 
           <Route path="/admin-dashboard/fee/add" element={<AddFee />}></Route>
-          <Route path="/admin-dashboard/payment" element={<PaymentListAdmin />} />
+          <Route path="/admin-dashboard/payment/all" element={<PaymentListAdmin />} />
           <Route
   path="/admin-dashboard/payment/statement"
   element={<PaymentStatementPage />}
@@ -85,8 +94,42 @@ function App() {
   path="/admin-dashboard/Id/:id"
   element={<StudentIDDownload />}
 />
+<Route
+  path="/admin-dashboard/addsubject"
+  element={<AddSubjectPage />}
+/>
+<Route
+  path="/admin-dashboard/subject"
+  element={<SubjectListPage />}
+/>
+<Route
+  path="/admin-dashboard/add-teacher"
+  element={<AddTeacherPage />}
+/>
+<Route
+  path="/admin-dashboard/teacher"
+  element={<TeacherListPage />}
+/>
+
+<Route
+  path="/admin-dashboard/addexam"
+  element={<AddExamPage />}
+/>
+<Route
+  path="/admin-dashboard/exam"
+  element={<ExamListPage />}
+/>
+<Route
+  path="/admin-dashboard/addmarks"
+  element={<AddMarksPage />}
+/>
+<Route
+  path="/admin-dashboard/progresscard"
+  element={<SearchProgressPage />}
+/>
 
         </Route>
+  <Route path="/progress/:studentId" element={<ProgressCard />} />
           <Route path="/payment/recipt/:id" element={<ReceiptPage />} />
           <Route path="/statement/:feeId" element={<StatementDownload />} />
                                            <Route path="/ID/:id" element={<IdDownload />} />
