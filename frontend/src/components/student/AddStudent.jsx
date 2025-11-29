@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { fetchClass } from "../../utils/StudentHelper";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const AddStudent = () => {
   const [classs, setClasses] = useState([]);
   const [formData, setFormData] = useState({});
-  const [rollNo, setRollNo] = useState(""); // store auto-generated roll number
-  const [successMessage, setSuccessMessage] = useState(""); // 👈 success message
-  const navigate = useNavigate();
+  const [rollNo, setRollNo] = useState(""); 
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const getClasses = async () => {
@@ -27,7 +25,7 @@ const AddStudent = () => {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
 
-    // When class is selected, fetch the next roll number
+    // Fetch next roll number when class changes
     if (name === "classs" && value) {
       try {
         const res = await axios.get(
@@ -46,28 +44,21 @@ const AddStudent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataObj = new FormData();
-    Object.keys(formData).forEach((key) => {
-      formDataObj.append(key, formData[key]);
-    });
+    Object.keys(formData).forEach((key) => formDataObj.append(key, formData[key]));
 
     try {
       const response = await axios.post(
         "http://localhost:3000/api/student/add",
         formDataObj,
         {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
 
       if (response.data.success) {
-        // 👇 show success message instead of navigating away
         setSuccessMessage(
           `Registration successful! Student ID: ${formData.studentId}, Roll No: ${rollNo}`
         );
-
-        // Clear form fields (optional)
         setFormData({});
         setRollNo("");
       }
@@ -79,23 +70,20 @@ const AddStudent = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Add new Student</h2>
+    <div className="max-w-4xl mx-auto mt-10 bg-white p-6 sm:p-8 rounded-md shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Add New Student</h2>
 
-      {/* 👇 Success message */}
       {successMessage && (
-        <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+        <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded text-sm sm:text-base">
           {successMessage}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* --- Name --- */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
               type="text"
               name="name"
@@ -107,11 +95,9 @@ const AddStudent = () => {
             />
           </div>
 
-          {/* --- Student ID --- */}
+          {/* Student ID */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Student ID
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Student ID</label>
             <input
               type="text"
               name="studentId"
@@ -123,43 +109,37 @@ const AddStudent = () => {
             />
           </div>
 
-          {/* --- Father's Name --- */}
+          {/* Father's Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Father's Name
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Father's Name</label>
             <input
               type="text"
               name="fatherName"
               value={formData.fatherName || ""}
               onChange={handleChange}
-              placeholder="Enter your Father name"
+              placeholder="Father's Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* --- Mother's Name --- */}
+          {/* Mother's Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Mother's name
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Mother's Name</label>
             <input
               type="text"
               name="MotherName"
               value={formData.MotherName || ""}
               onChange={handleChange}
-              placeholder="Enter your Mother name"
+              placeholder="Mother's Name"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* --- Email --- */}
+          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               name="email"
@@ -171,11 +151,9 @@ const AddStudent = () => {
             />
           </div>
 
-          {/* --- Phone --- */}
+          {/* Phone */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Phone No
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Phone No</label>
             <input
               type="tel"
               name="phoneNo"
@@ -187,27 +165,22 @@ const AddStudent = () => {
             />
           </div>
 
-          {/* --- DOB --- */}
+          {/* DOB */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Date of Birth
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
             <input
               type="date"
               name="dob"
               value={formData.dob || ""}
               onChange={handleChange}
-              placeholder="DOB"
               className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* --- Password --- */}
+          {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Password</label>
             <input
               type="password"
               name="password"
@@ -219,11 +192,9 @@ const AddStudent = () => {
             />
           </div>
 
-          {/* --- Gender --- */}
+          {/* Gender */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Gender
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Gender</label>
             <select
               name="gender"
               value={formData.gender || ""}
@@ -234,15 +205,13 @@ const AddStudent = () => {
               <option value="">Select Gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
-              <option value="Others">Others</option>
+              <option value="others">Others</option>
             </select>
           </div>
 
-          {/* --- Class --- */}
+          {/* Class */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Class
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Class</label>
             <select
               name="classs"
               value={formData.classs || ""}
@@ -259,11 +228,9 @@ const AddStudent = () => {
             </select>
           </div>
 
-          {/* --- Roll No (Auto-generated) --- */}
+          {/* Roll No */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Roll No
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Roll No</label>
             <input
               type="text"
               name="rollNo"
@@ -273,11 +240,9 @@ const AddStudent = () => {
             />
           </div>
 
-          {/* --- Role --- */}
+          {/* Role */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Role
-            </label>
+            <label className="block text-sm font-medium text-gray-700">Role</label>
             <select
               name="role"
               value={formData.role || ""}
@@ -291,11 +256,9 @@ const AddStudent = () => {
             </select>
           </div>
 
-          {/* --- Image --- */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Upload Image
-            </label>
+          {/* Image */}
+          <div className="sm:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">Upload Image</label>
             <input
               type="file"
               name="image"
@@ -307,7 +270,7 @@ const AddStudent = () => {
           </div>
         </div>
 
-        <button className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded">
+        <button className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded transition">
           Add Student
         </button>
       </form>

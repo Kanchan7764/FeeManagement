@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
-  FaBuilding,
   FaChalkboard,
-  FaCoins,
-  FaCreditCard,
-  FaDollarSign,
   FaFileInvoiceDollar,
-  FaMoneyBill,
-  FaMoneyBillAlt,
-  FaReceipt,
-  FaSlidersH,
   FaTachometerAlt,
   FaUsers,
   FaAngleDown,
   FaAngleUp,
+  FaUserGraduate,
+  FaIdCard,
+  FaBook,
+  FaClipboardList,
+  FaMoneyCheckAlt,
+  FaRegMoneyBillAlt,
+  FaRegFileAlt,
+  FaRegBuilding,
+  FaCreditCard,
 } from "react-icons/fa";
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ closeSidebar }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
 
   const toggleDropdown = (menu) => {
@@ -25,32 +26,33 @@ const AdminSidebar = () => {
   };
 
   return (
-    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 bottom-0 space-y-2 w-64">
+    <div className="bg-gray-800 text-white h-screen fixed left-0 top-0 w-64 space-y-2 overflow-y-auto">
+
+      {/* Header */}
       <div className="bg-teal-600 h-12 flex items-center justify-center">
-        <h3 className="text-2xl text-center font-pacific">Fee Manage System</h3>
+        <h3 className="text-xl font-semibold">Fee Manage System</h3>
       </div>
+
       <div className="px-4">
+
         {/* Dashboard */}
         <NavLink
           to="/admin-dashboard"
+          onClick={closeSidebar}
           className={({ isActive }) =>
-            `${
-              isActive ? "bg-teal-500 pl-3" : ""
-            } flex items-center justify-between space-x-4 pl-3 py-2.5 rounded`
+            `${isActive ? "bg-teal-500" : ""} flex items-center space-x-4 pl-3 py-2.5 rounded`
           }
           end
         >
-          <div className="flex items-center space-x-4">
-            <FaTachometerAlt />
-            <span>Dashboard</span>
-          </div>
+          <FaTachometerAlt />
+          <span>Dashboard</span>
         </NavLink>
 
         {/* Student Dropdown */}
         <div>
           <button
             onClick={() => toggleDropdown("student")}
-            className="flex items-center justify-between w-full space-x-4 pl-3 py-2.5 rounded hover:bg-teal-500"
+            className="flex items-center justify-between w-full pl-3 py-2.5 rounded hover:bg-teal-500"
           >
             <div className="flex items-center space-x-4">
               <FaUsers />
@@ -58,59 +60,61 @@ const AdminSidebar = () => {
             </div>
             {openDropdown === "student" ? <FaAngleUp /> : <FaAngleDown />}
           </button>
+
           {openDropdown === "student" && (
             <div className="pl-12 flex flex-col space-y-1">
               <NavLink
                 to="/admin-dashboard/student"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Student List
+                <FaUserGraduate />
+                <span>Student List</span>
               </NavLink>
               <NavLink
                 to="/admin-dashboard/Id/:id"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Student ID
+                <FaIdCard />
+                <span>Student ID</span>
               </NavLink>
               <NavLink
                 to="/admin-dashboard/add-student"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Add Student
+                <FaBook />
+                <span>Add Student</span>
               </NavLink>
-               <NavLink
+              <NavLink
                 to="/admin-dashboard/progresscard"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                 Progress Card 
+                <FaClipboardList />
+                <span>Progress Card</span>
               </NavLink>
             </div>
           )}
         </div>
 
+        {/* Marks Dropdown */}
         <div>
           <button
             onClick={() => toggleDropdown("marks")}
-            className="flex items-center justify-between w-full space-x-4 pl-3 py-2.5 rounded hover:bg-teal-500"
+            className="flex items-center justify-between w-full pl-3 py-2.5 rounded hover:bg-teal-500"
           >
             <div className="flex items-center space-x-4">
-              <FaUsers />
+              <FaClipboardList />
               <span>Marks</span>
             </div>
             {openDropdown === "marks" ? <FaAngleUp /> : <FaAngleDown />}
@@ -119,27 +123,26 @@ const AdminSidebar = () => {
             <div className="pl-12 flex flex-col space-y-1">
               <NavLink
                 to="/admin-dashboard/addmarks"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Marks Add
+                <FaClipboardList />
+                <span>Add Marks</span>
               </NavLink>
-              
-              
             </div>
           )}
         </div>
 
+        {/* Exam Dropdown */}
         <div>
           <button
             onClick={() => toggleDropdown("exam")}
-            className="flex items-center justify-between w-full space-x-4 pl-3 py-2.5 rounded hover:bg-teal-500"
+            className="flex items-center justify-between w-full pl-3 py-2.5 rounded hover:bg-teal-500"
           >
             <div className="flex items-center space-x-4">
-              <FaUsers />
+              <FaRegFileAlt />
               <span>Exam</span>
             </div>
             {openDropdown === "exam" ? <FaAngleUp /> : <FaAngleDown />}
@@ -148,34 +151,33 @@ const AdminSidebar = () => {
             <div className="pl-12 flex flex-col space-y-1">
               <NavLink
                 to="/admin-dashboard/addexam"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Add Exam
+                <FaBook />
+                <span>Add Exam</span>
               </NavLink>
               <NavLink
                 to="/admin-dashboard/exam"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Exam List
+                <FaClipboardList />
+                <span>Exam List</span>
               </NavLink>
-              
-              
             </div>
           )}
         </div>
 
+        {/* Teacher Dropdown */}
         <div>
           <button
             onClick={() => toggleDropdown("teacher")}
-            className="flex items-center justify-between w-full space-x-4 pl-3 py-2.5 rounded hover:bg-teal-500"
+            className="flex items-center justify-between w-full pl-3 py-2.5 rounded hover:bg-teal-500"
           >
             <div className="flex items-center space-x-4">
               <FaUsers />
@@ -187,36 +189,36 @@ const AdminSidebar = () => {
             <div className="pl-12 flex flex-col space-y-1">
               <NavLink
                 to="/admin-dashboard/teacher"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Teacher List
+                <FaUserGraduate />
+                <span>Teacher List</span>
               </NavLink>
-              
               <NavLink
                 to="/admin-dashboard/add-teacher"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Add Teacher
+                <FaBook />
+                <span>Add Teacher</span>
               </NavLink>
             </div>
           )}
         </div>
 
-         <div>
+        {/* Subject Dropdown */}
+        <div>
           <button
             onClick={() => toggleDropdown("subject")}
-            className="flex items-center justify-between w-full space-x-4 pl-3 py-2.5 rounded hover:bg-teal-500"
+            className="flex items-center justify-between w-full pl-3 py-2.5 rounded hover:bg-teal-500"
           >
             <div className="flex items-center space-x-4">
-              <FaUsers />
+              <FaBook />
               <span>Subject</span>
             </div>
             {openDropdown === "subject" ? <FaAngleUp /> : <FaAngleDown />}
@@ -225,24 +227,23 @@ const AdminSidebar = () => {
             <div className="pl-12 flex flex-col space-y-1">
               <NavLink
                 to="/admin-dashboard/subject"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Subject List
+                <FaRegBuilding />
+                <span>Subject List</span>
               </NavLink>
-              
               <NavLink
                 to="/admin-dashboard/addsubject"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Add Subject
+                <FaBook />
+                <span>Add Subject</span>
               </NavLink>
             </div>
           )}
@@ -252,7 +253,7 @@ const AdminSidebar = () => {
         <div>
           <button
             onClick={() => toggleDropdown("class")}
-            className="flex items-center justify-between w-full space-x-4 pl-3 py-2.5 rounded hover:bg-teal-500"
+            className="flex items-center justify-between w-full pl-3 py-2.5 rounded hover:bg-teal-500"
           >
             <div className="flex items-center space-x-4">
               <FaChalkboard />
@@ -264,32 +265,33 @@ const AdminSidebar = () => {
             <div className="pl-12 flex flex-col space-y-1">
               <NavLink
                 to="/admin-dashboard/class"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Class List
+                <FaChalkboard />
+                <span>Class List</span>
               </NavLink>
               <NavLink
                 to="/admin-dashboard/add-class"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Add Class
+                <FaBook />
+                <span>Add Class</span>
               </NavLink>
             </div>
           )}
         </div>
 
+        {/* Fee Dropdown */}
         <div>
           <button
             onClick={() => toggleDropdown("fee")}
-            className="flex items-center justify-between w-full space-x-4 pl-3 py-2.5 rounded hover:bg-teal-500"
+            className="flex items-center justify-between w-full pl-3 py-2.5 rounded hover:bg-teal-500"
           >
             <div className="flex items-center space-x-4">
               <FaFileInvoiceDollar />
@@ -301,48 +303,48 @@ const AdminSidebar = () => {
             <div className="pl-12 flex flex-col space-y-1">
               <NavLink
                 to="/admin-dashboard/fee/all"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Assign Fee List{" "}
+                <FaMoneyCheckAlt />
+                <span>Assign Fee List</span>
               </NavLink>
               <NavLink
                 to="/admin-dashboard/fee/add"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Assign Fee
+                <FaRegMoneyBillAlt />
+                <span>Assign Fee</span>
               </NavLink>
-
               <NavLink
                 to="/admin-dashboard/payment/all"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Deposit List
+                <FaCreditCard />
+                <span>Deposit List</span>
               </NavLink>
               <NavLink
                 to="/admin-dashboard/payment/statement"
+                onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${
-                    isActive ? "bg-teal-500" : ""
-                  } py-2 px-3 rounded hover:bg-teal-600`
+                  `${isActive ? "bg-teal-500" : ""} flex items-center space-x-2 py-2 px-3 rounded hover:bg-teal-600`
                 }
               >
-                Statement
+                <FaFileInvoiceDollar />
+                <span>Statement</span>
               </NavLink>
             </div>
           )}
         </div>
+
       </div>
     </div>
   );

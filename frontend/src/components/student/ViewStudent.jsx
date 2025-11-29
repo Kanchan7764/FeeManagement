@@ -1,13 +1,12 @@
 import axios from 'axios'
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-
 const ViewStudent = () => {
-    const {id}= useParams()
-    const [student ,setStudent] = useState(null)
+  const { id } = useParams()
+  const [student, setStudent] = useState(null)
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchStudent = async () => {
       try {
         const response = await axios.get(
@@ -18,7 +17,6 @@ const ViewStudent = () => {
             },
           }
         );
-     console.log(response.data)
         if (response.data.success) {
           setStudent(response.data.student);
         }
@@ -29,47 +27,43 @@ const ViewStudent = () => {
       } 
     };
     fetchStudent();
-  }, []);
-  
+  }, [id]);
+
+  if (!student) return <div className="text-center mt-10">Loading...</div>;
+
   return (
-    <>{student? (
-    <div className='max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md'>
+    <div className='max-w-4xl mx-auto mt-10 bg-white p-6 sm:p-8 rounded-md shadow-md'>
       <h2 className='text-2xl font-bold mb-8 text-center'>Student Details</h2>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-        <div>
-          <img src={`http://localhost:3000/${student.userId.profileImage}`} alt="" className='rounded-full border w-72' />
+      
+      <div className='flex flex-col md:flex-row gap-6 items-center md:items-start'>
+        {/* Profile Image */}
+        <div className='flex justify-center md:justify-start w-full md:w-1/3'>
+          <img
+            src={`http://localhost:3000/${student.userId.profileImage}`}
+            alt={student.userId.name}
+            className='rounded-full border w-full max-w-xs object-cover'
+          />
         </div>
-        <div>
-          <div className='flex space-x-3 mb-5'>
-            <p className='text-lg font-bold'>Name:</p>
-            <p className='font-medium'>{student.userId.name}</p>
-          </div>
-          <div className='flex space-x-3 mb-5'>
-            <p className='text-lg font-bold'>Student ID:</p>
-            <p className='font-medium'>{student.studentId}</p>
-          </div>
-          <div className='flex space-x-3 mb-5'>
-            <p className='text-lg font-bold'>Father's Name:</p>
-            <p className='font-medium'>{student.fatherName}</p>
-          </div><div className='flex space-x-3 mb-5'>
-            <p className='text-lg font-bold'>Mother's Name:</p>
-            <p className='font-medium'>{student.MotherName}</p>
-          </div><div className='flex space-x-3 mb-5'>
-            <p className='text-lg font-bold'>class:</p>
-            <p className='font-medium'>{student.classs.class_name}</p>
-          </div><div className='flex space-x-3 mb-5'>
-            <p className='text-lg font-bold'>Date Of Birth:</p>
-            <p className='font-medium'>{new Date(student.dob).toLocaleDateString()}</p>
-          </div>
-          <div className='flex space-x-3 mb-5'>
-            <p className='text-lg font-bold'>Gender:</p>
-            <p className='font-medium'>{student.gender}</p>
-          </div>
+
+        {/* Student Details */}
+        <div className='flex-1 w-full'>
+          {[
+            { label: "Name", value: student.userId.name },
+            { label: "Student ID", value: student.studentId },
+            { label: "Father's Name", value: student.fatherName },
+            { label: "Mother's Name", value: student.MotherName },
+            { label: "Class", value: student.classs.class_name },
+            { label: "Date Of Birth", value: new Date(student.dob).toLocaleDateString() },
+            { label: "Gender", value: student.gender },
+          ].map((item, index) => (
+            <div key={index} className='flex flex-col sm:flex-row sm:space-x-2 mb-4'>
+              <p className='text-lg font-bold w-full sm:w-1/3'>{item.label}:</p>
+              <p className='font-medium w-full sm:w-2/3'>{item.value}</p>
+            </div>
+          ))}
         </div>
       </div>
-      
     </div>
-    ):<div>Loading....</div>}</>
   )
 }
 

@@ -8,7 +8,7 @@ const EditStudent = () => {
 
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState(null);
-  const [classes, setClasses] = useState([]); // for dropdown
+  const [classes, setClasses] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     fatherName: "",
@@ -18,7 +18,6 @@ const EditStudent = () => {
     classId: "",
   });
 
-  // Fetch all classes
   useEffect(() => {
     const fetchClasses = async () => {
       try {
@@ -35,7 +34,6 @@ const EditStudent = () => {
     fetchClasses();
   }, []);
 
-  // Fetch student data
   useEffect(() => {
     const fetchStudent = async () => {
       try {
@@ -54,10 +52,7 @@ const EditStudent = () => {
             phoneNo: s.phoneNo || "",
             classId: s.classs?._id || "",
           });
-          console.log("student",s)
-          
         }
-
       } catch (err) {
         console.error(err);
         alert("Failed to fetch student data");
@@ -79,7 +74,7 @@ const EditStudent = () => {
 
     try {
       const payload = {
-         name: formData.name , // backend may require this
+        name: formData.name,
         fatherName: formData.fatherName,
         MotherName: formData.MotherName,
         dob: formData.dob,
@@ -105,15 +100,16 @@ const EditStudent = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (!student) return <div>No student data found</div>;
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  if (!student) return <div className="text-center mt-10">No student data found</div>;
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Edit Student</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="max-w-4xl mx-auto mt-10 bg-white p-6 sm:p-8 rounded-md shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center sm:text-left">Edit Student</h2>
 
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
@@ -121,11 +117,12 @@ const EditStudent = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md text-sm sm:text-base"
               required
             />
           </div>
 
+          {/* Father's Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Father's Name</label>
             <input
@@ -133,11 +130,12 @@ const EditStudent = () => {
               name="fatherName"
               value={formData.fatherName}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md text-sm sm:text-base"
               required
             />
           </div>
 
+          {/* Mother's Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Mother's Name</label>
             <input
@@ -145,11 +143,12 @@ const EditStudent = () => {
               name="MotherName"
               value={formData.MotherName}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md text-sm sm:text-base"
               required
             />
           </div>
 
+          {/* Phone No */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Phone No</label>
             <input
@@ -157,11 +156,12 @@ const EditStudent = () => {
               name="phoneNo"
               value={formData.phoneNo}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md text-sm sm:text-base"
               required
             />
           </div>
 
+          {/* DOB */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
             <input
@@ -169,18 +169,19 @@ const EditStudent = () => {
               name="dob"
               value={formData.dob}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md text-sm sm:text-base"
               required
             />
           </div>
 
+          {/* Class */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Class</label>
             <select
               name="classId"
               value={formData.classId}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md text-sm sm:text-base"
               required
             >
               <option value="">Select Class</option>
@@ -191,12 +192,11 @@ const EditStudent = () => {
               ))}
             </select>
           </div>
-
         </div>
 
         <button
           type="submit"
-          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded transition"
         >
           Update Student
         </button>
