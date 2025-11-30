@@ -132,7 +132,7 @@ function App() {
   <Route path="/progress/:studentId" element={<ProgressCard />} />
           <Route path="/payment/recipt/:id" element={<ReceiptPage />} />
           <Route path="/statement/:feeId" element={<StatementDownload />} />
-                                           <Route path="/ID/:id" element={<IdDownload />} />
+          <Route path="/ID/:id" element={<IdDownload />} />
 
 
         <Route

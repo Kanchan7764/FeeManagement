@@ -123,18 +123,18 @@ const StudentList = () => {
   const customStyles = {
     headCells: {
       style: {
-        paddingLeft: '8px',
-        paddingRight: '8px',
-        fontSize: '12px',
-      }
+        paddingLeft: "8px",
+        paddingRight: "8px",
+        fontSize: "12px",
+      },
     },
     cells: {
       style: {
-        paddingLeft: '8px',
-        paddingRight: '8px',
-        fontSize: '12px',
-      }
-    }
+        paddingLeft: "8px",
+        paddingRight: "8px",
+        fontSize: "12px",
+      },
+    },
   };
 
   return (
@@ -159,7 +159,7 @@ const StudentList = () => {
         </Link>
       </div>
 
-      {/* Mobile stacked cards */}
+      {/* MOBILE (<640px) */}
       <div className="grid grid-cols-1 gap-4 sm:hidden">
         {filteredStudent.map((stu) => (
           <div key={stu._id} className="border rounded p-4 shadow">
@@ -191,8 +191,41 @@ const StudentList = () => {
         ))}
       </div>
 
-      {/* Desktop table */}
-      <div className="hidden sm:block overflow-x-auto">
+      {/* TABLET (640px–1023px) */}
+      <div className="hidden sm:grid lg:hidden grid-cols-2 gap-4">
+        {filteredStudent.map((stu) => (
+          <div key={stu._id} className="border rounded p-4 shadow flex flex-col">
+            <div className="flex items-center space-x-3">
+              <img
+                src={stu.profileImage}
+                alt="profile"
+                className="rounded-full w-14 h-14 object-cover"
+              />
+              <div className="flex-1">
+                <p className="font-bold text-lg">{stu.name}</p>
+                <p className="text-sm">Student ID: {stu.studentId}</p>
+                <p className="text-sm">Class: {stu.class_name}</p>
+                <p className="text-sm">Roll No: {stu.rollNo}</p>
+                <p className="text-sm">Status: {stu.status}</p>
+              </div>
+            </div>
+
+            <div className="flex space-x-2 mt-2">
+              <FaCheckCircle
+                className="text-green-600 cursor-pointer"
+                onClick={() => updateStatus(stu._id, "active")}
+              />
+              <FaTimesCircle
+                className="text-red-600 cursor-pointer"
+                onClick={() => updateStatus(stu._id, "blocked")}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* DESKTOP TABLE (≥1024px) */}
+      <div className="hidden lg:block overflow-x-auto">
         <DataTable
           columns={columns}
           data={filteredStudent}
@@ -200,7 +233,7 @@ const StudentList = () => {
           pagination
           highlightOnHover
           dense
-          responsive={false} // prevent automatic hiding
+          responsive={false}
           customStyles={customStyles}
         />
       </div>

@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const StatementStudent = () => {
   const [feeId, setFeeId] = useState("");
-  const [data, setData] = useState(null);
   const [message, setMessage] = useState(""); // for no payment messages
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const searchStatement = async () => {
     if (!feeId.trim()) return setMessage("Please enter Fee ID");
@@ -19,47 +18,46 @@ const StatementStudent = () => {
         }
       );
 
-     if (res.data.success) {
-        setData(res.data);
+      if (res.data.success) {
         setMessage(""); // clear previous messages
-        // Optional: navigate to another page if you want
+        // Navigate to statement page
         navigate(`/statement/${feeId}`, { state: { statement: res.data } });
       } else {
-        setData(null);
         setMessage(res.data.message || `No payments found for Fee ID: ${feeId}`);
       }
     } catch (error) {
       console.error("Error fetching statement:", error);
-      setData(null);
       setMessage("No data found or you do not have access!");
     }
   };
 
   return (
-    <div className="p-10 flex flex-col items-center">
-      {/* ---------- SEARCH BOX ---------- */}
-      <div className="flex gap-3 mb-8">
-        <input
-          type="text"
-          placeholder="Enter Fee ID"
-          className="border px-4 py-2 rounded w-64"
-          value={feeId}
-          onChange={(e) => setFeeId(e.target.value)}
-        />
-        <button
-          onClick={searchStatement}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Search
-        </button>
+    <div className="min-h-screen bg-gray-100 p-5 flex justify-center items-start">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
+        <h1 className="text-2xl font-bold text-center mb-6">Search Payment Statement</h1>
+
+        {/* Search Box */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+          <input
+            type="text"
+            placeholder="Enter Fee ID"
+            className="flex-1 border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={feeId}
+            onChange={(e) => setFeeId(e.target.value)}
+          />
+          <button
+            onClick={searchStatement}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full sm:w-auto"
+          >
+            Search
+          </button>
+        </div>
+
+        {/* Message */}
+        {message && (
+          <p className="text-red-600 font-semibold text-center">{message}</p>
+        )}
       </div>
-
-      {/* ---------- MESSAGE ---------- */}
-      {message && (
-        <p className="text-red-600 font-semibold mb-4">{message}</p>
-      )}
-
-     
     </div>
   );
 };

@@ -15,14 +15,12 @@ const PaymentList = () => {
 
   const fetchPayments = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/api/payment/student/${user._id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-console.log("res",res)
-      // Filter payments only for logged-in student
-      const studentPayments = (res.data.allPayment || [])
-      console.log("payment",studentPayments)
+      const res = await axios.get(
+        `http://localhost:3000/api/payment/student/${user._id}`,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
 
+      const studentPayments = res.data.allPayment || [];
       const data = studentPayments.map((p, idx) => ({
         _id: p._id,
         sno: idx + 1,
@@ -77,7 +75,7 @@ console.log("res",res)
       name: "Receipt",
       cell: (row) => (
         <button
-          className="bg-teal-600 text-white px-2 py-1 rounded hover:bg-teal-700"
+          className="bg-teal-600 text-white px-2 py-1 rounded hover:bg-teal-700 transition"
           onClick={() => navigate(`/payment/recipt/${row._id}`)}
         >
           🧾
@@ -93,12 +91,12 @@ console.log("res",res)
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6 md:p-8">
       {/* Top Bar */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3 sm:gap-0">
         <button
           onClick={handleAddPayment}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
         >
           ➕ Add Payment
         </button>
@@ -106,7 +104,7 @@ console.log("res",res)
         <button
           onClick={handleDownloadHistory}
           disabled={payments.length === 0}
-          className={`px-4 py-2 rounded ${
+          className={`w-full sm:w-auto px-4 py-2 rounded ${
             payments.length === 0
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-teal-600 hover:bg-teal-700 text-white"
@@ -116,20 +114,62 @@ console.log("res",res)
         </button>
       </div>
 
-      {/* Data Table */}
-      {payments.length === 0 ? (
-        <p className="text-center font-semibold text-gray-600 mt-8">
-          No payments found for this student.
-        </p>
-      ) : (
-        <DataTable
-          columns={columns}
-          data={payments}
-          pagination
-          highlightOnHover
-          striped
-        />
-      )}
+      {/* Data Table for larger screens */}
+      <div className="hidden sm:block overflow-x-auto">
+        {payments.length === 0 ? (
+          <p className="text-center font-semibold text-gray-600 mt-8">
+            No payments found for this student.
+          </p>
+        ) : (
+          <DataTable
+            columns={columns}
+            data={payments}
+            pagination
+            highlightOnHover
+            striped
+            responsive
+            dense
+          />
+        )}
+      </div>
+
+      {/* Mobile stacked cards */}
+      <div className="sm:hidden space-y-4">
+        {payments.map((p) => (
+          <div key={p._id} className="border p-4 rounded-lg bg-white shadow-sm">
+            <p>
+              <span className="font-semibold">S.No:</span> {p.sno}
+            </p>
+            <p>
+              <span className="font-semibold">Student ID:</span> {p.studentId}
+            </p>
+            <p>
+              <span className="font-semibold">Fee ID:</span> {p.feeId}
+            </p>
+            <p>
+              <span className="font-semibold">Paid Amount:</span> ₹{p.paidAmount}
+            </p>
+            <p>
+              <span className="font-semibold">Transaction ID:</span> {p.paymentId}
+            </p>
+            <p>
+              <span className="font-semibold">Deposit Date:</span> {p.paymentDate}
+            </p>
+            <div className="mt-2">
+              <button
+                className="bg-teal-600 text-white px-2 py-1 rounded hover:bg-teal-700 transition"
+                onClick={() => navigate(`/payment/recipt/${p._id}`)}
+              >
+                🧾 Receipt
+              </button>
+            </div>
+          </div>
+        ))}
+
+        {payments.length === 0 && (
+          <p className="text-center py-4 text-gray-600">No payments found.</p>
+        )}
+      </div>
     </div>
   );
 };

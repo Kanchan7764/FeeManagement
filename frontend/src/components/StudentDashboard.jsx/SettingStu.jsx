@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
@@ -62,65 +62,74 @@ const SettingStu = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Change Password</h2>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-6">
+      <div className="w-full max-w-md bg-white p-6 sm:p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left">
+          Change Password
+        </h2>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="text-sm font-medium block text-gray-700">
-            Old Password
-          </label>
-          <input
-            type="password"
-            name="oldPassword"
-            placeholder="Enter old password"
-            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md"
-            onChange={handleChange}
-            required
-          />
-        </div>
+        {error && <p className="text-red-500 mb-4 text-center sm:text-left">{error}</p>}
 
-        <div className="mb-4">
-          <label className="text-sm font-medium block text-gray-700">
-            New Password
-          </label>
-          <input
-            type="password"
-            name="newPassword"
-            placeholder="Enter new password"
-            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md"
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+          {/* Old Password */}
+          <div>
+            <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1">
+              Old Password
+            </label>
+            <input
+              type="password"
+              name="oldPassword"
+              placeholder="Enter old password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-teal-300"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label className="text-sm font-medium block text-gray-700">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm new password"
-            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md"
-            onChange={handleChange}
-            required
-          />
-        </div>
+          {/* New Password */}
+          <div>
+            <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1">
+              New Password
+            </label>
+            <input
+              type="password"
+              name="newPassword"
+              placeholder="Enter new password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-teal-300"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-full py-2 rounded-md text-white transition ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-teal-600 hover:bg-teal-700"
-          }`}
-        >
-          {loading ? "Changing..." : "Change Password"}
-        </button>
-      </form>
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm new password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-teal-300"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 rounded-md text-white transition duration-200 ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-teal-600 hover:bg-teal-700"
+            }`}
+          >
+            {loading ? "Changing..." : "Change Password"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

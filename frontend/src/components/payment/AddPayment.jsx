@@ -22,7 +22,6 @@ const AddPayment = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [paymentHistory, setPaymentHistory] = useState([]);
 
-  // Fetch pending fees
   const fetchPendingFees = async () => {
     try {
       const res = await axios.get(`http://localhost:3000/api/fee/${user._id}`, {
@@ -40,7 +39,6 @@ const AddPayment = () => {
 
   useEffect(() => { fetchPendingFees(); }, []);
 
-  // Fetch payment history for selected fee
   const fetchPaymentHistory = async (feeId) => {
     if (!feeId) return;
     try {
@@ -53,12 +51,9 @@ const AddPayment = () => {
         );
         setPaymentHistory(sortedPayments);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
-  // Update discounted fee & installment when fee or plan changes
   useEffect(() => {
     if (!selectedFee) return;
 
@@ -71,7 +66,6 @@ const AddPayment = () => {
       const plan = paymentPlans.find(p => p.label === selectedPlan);
       const discounted = selectedFee.fees * (1 - plan.discount / 100);
       const installment = discounted / plan.installments;
-
       setDiscountedFee(Number(discounted.toFixed(2)));
       setInstallmentAmount(Number(installment.toFixed(2)));
       setAmountToPay(Number(installment.toFixed(2)));
@@ -125,8 +119,8 @@ const AddPayment = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-8 bg-white rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Add Payment</h2>
+    <div className="max-w-3xl mx-auto mt-6 p-4 sm:p-8 bg-white rounded-md shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-center">Add Payment</h2>
 
       {successMessage && (
         <div className="mb-4 p-4 rounded-md bg-green-100 border border-green-400 text-green-800">
@@ -142,17 +136,17 @@ const AddPayment = () => {
 
       {/* Payment History */}
       {paymentHistory.length > 0 && (
-        <div className="mb-6 border p-4 rounded bg-gray-50">
+        <div className="mb-6 border p-4 rounded bg-gray-50 overflow-x-auto">
           <h3 className="font-semibold text-lg mb-2">Payment History</h3>
           <ul className="space-y-2">
             {paymentHistory.map(p => (
-              <li key={p._id} className="p-2 border rounded flex justify-between items-center bg-white">
-                <div>
+              <li key={p._id} className="p-2 border rounded flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white">
+                <div className="flex flex-col sm:flex-row sm:gap-6">
                   <p><strong>ID:</strong> {p.paymentId}</p>
                   <p><strong>Amount:</strong> ₹{p.paidAmount}</p>
                   <p><strong>Date:</strong> {new Date(p.paymentdate).toLocaleDateString()}</p>
                 </div>
-                <span className={`px-2 py-1 rounded text-white ${
+                <span className={`mt-2 sm:mt-0 px-2 py-1 rounded text-white ${
                   p.status === "completed" ? "bg-green-600" :
                   p.status === "pending" ? "bg-yellow-500" :
                   "bg-gray-500"
@@ -166,7 +160,7 @@ const AddPayment = () => {
       )}
 
       {/* Payment Form */}
-      <div className="grid gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Fee Type</label>
           <select
@@ -252,7 +246,7 @@ const AddPayment = () => {
 
         <button
           onClick={handlePaymentSubmit}
-          className="w-full mt-4 py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white rounded-md font-semibold"
+          className="w-full mt-4 py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white rounded-md font-semibold transition"
         >
           Pay Now
         </button>

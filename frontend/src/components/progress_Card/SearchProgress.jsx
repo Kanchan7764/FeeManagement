@@ -8,14 +8,20 @@ const SearchProgressPage = () => {
   const navigate = useNavigate();
 
   const handleSearch = async () => {
+    if (!studentId.trim()) {
+      setError("Please enter a Student ID");
+      return;
+    }
+
     try {
       const res = await axios.get(
         `http://localhost:3000/api/marks/progress/${studentId}`
       );
 
       if (res.data.success) {
-        // Navigate to progress page with studentId param
         navigate(`/progress/${studentId}`);
+      } else {
+        setError("Student Progress Report not found");
       }
     } catch (err) {
       setError("Student Progress Report not found");
@@ -23,31 +29,33 @@ const SearchProgressPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-5">
-      <div className="max-w-xl mx-auto bg-white shadow-lg p-6 rounded-xl">
-        <h1 className="text-2xl font-bold mb-4 text-center">Search Progress Card</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white shadow-lg p-6 rounded-xl">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+          Search Progress Card
+        </h1>
 
-        <div className="flex gap-2">
+        {/* Input and Button */}
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="text"
             placeholder="Enter Student ID"
-            className="w-full border p-2 rounded-lg"
+            className="flex-1 border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
           />
 
           <button
             onClick={handleSearch}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
           >
             Search
           </button>
         </div>
 
+        {/* Error Message */}
         {error && (
-          <p className="text-red-600 mt-3 text-center font-semibold">
-            {error}
-          </p>
+          <p className="text-red-600 mt-4 text-center font-medium">{error}</p>
         )}
       </div>
     </div>

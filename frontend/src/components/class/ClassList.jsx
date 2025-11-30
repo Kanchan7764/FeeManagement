@@ -56,35 +56,69 @@ const ClassList = () => {
     setFilteredClass(records);
   };
 
+  if (classLoading)
+    return (
+      <div className="flex justify-center items-center h-64">
+        <p>Loading...</p>
+      </div>
+    );
+
   return (
-    <>
-      {classLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="p-5">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold">Manage Class</h3>
+    <div className="p-4 sm:p-6">
+      <div className="text-center mb-4">
+        <h3 className="text-2xl font-bold">Manage Class</h3>
+      </div>
+
+      {/* Filter and Add Button */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 space-y-2 sm:space-y-0">
+        <input
+          type="text"
+          placeholder="Search by Class Name"
+          className="px-4 py-2 border rounded w-full sm:w-1/2"
+          onChange={filterClasses}
+        />
+        <Link
+          to="/admin-dashboard/add-class"
+          className="px-4 py-2 bg-teal-600 rounded text-white w-full sm:w-auto text-center"
+        >
+          Add New Class
+        </Link>
+      </div>
+
+      {/* Table for larger screens */}
+      <div className="hidden sm:block overflow-x-auto">
+        <Datatable
+          columns={columns}
+          data={filteredClass}
+          pagination
+          responsive
+          highlightOnHover
+          dense
+        />
+      </div>
+
+      {/* Mobile stacked cards */}
+      <div className="sm:hidden space-y-4">
+        {filteredClass.map((cls) => (
+          <div
+            key={cls._id}
+            className="border p-4 rounded-lg bg-white shadow-sm"
+          >
+            <p className="font-semibold">
+              Class: <span className="font-normal">{cls.class_name}</span>
+            </p>
+            <p className="font-semibold">
+              Description: <span className="font-normal">{cls.description}</span>
+            </p>
+            <div className="mt-2">{cls.action}</div>
           </div>
-          <div className="flex justify-between items-center">
-            <input
-              type="text"
-              placeholder="search by class Name"
-              className="px-4 py-0.5 border"
-              onChange={filterClasses}
-            />
-            <Link
-              to="/admin-dashboard/add-class"
-              className="px-4 py-1 bg-teal-600 rounded text-white"
-            >
-              Add New Class
-            </Link>
-          </div>
-          <div className="mt-5">
-            <Datatable columns={columns} data={filteredClass} pagination />
-          </div>
-        </div>
-      )}
-    </>
+        ))}
+
+        {filteredClass.length === 0 && (
+          <p className="text-center py-4 text-gray-600">No classes found.</p>
+        )}
+      </div>
+    </div>
   );
 };
 

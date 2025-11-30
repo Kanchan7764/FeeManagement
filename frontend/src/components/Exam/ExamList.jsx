@@ -18,12 +18,10 @@ export default function ExamListPage() {
     }
   };
 
-  // Toggle which class's exams are shown
   const toggleExpandClass = (className) => {
     setExpandedClass(expandedClass === className ? null : className);
   };
 
-  // Group exams by class
   const examsByClass = exams.reduce((acc, exam) => {
     if (!acc[exam.className]) acc[exam.className] = [];
     acc[exam.className].push(exam);
@@ -31,63 +29,55 @@ export default function ExamListPage() {
   }, {});
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Exam List</h2>
+    <div className="p-4 sm:p-6 md:p-8">
+      <h2 className="text-2xl font-bold mb-6 text-center">Exam List</h2>
 
-      <table className="w-full border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200 text-center">
-            <th className="p-3 border">Class</th>
-            <th className="p-3 border">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(examsByClass).map((className) => (
-            <>
-              <tr key={className} className="text-center bg-gray-100">
-                <td className="p-3 border font-semibold">{className}</td>
-                <td className="p-3 border">
-                  <button
-                    className="bg-blue-600 text-white px-4 py-1 rounded"
-                    onClick={() => toggleExpandClass(className)}
+      <div className="flex flex-col space-y-4">
+        {Object.keys(examsByClass).map((className) => (
+          <div key={className} className="bg-gray-100 rounded-lg shadow overflow-hidden">
+            {/* Class Header */}
+            <div className="flex justify-between items-center p-4 cursor-pointer" onClick={() => toggleExpandClass(className)}>
+              <span className="font-semibold">{className}</span>
+              <button className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700">
+                {expandedClass === className ? "Hide Exams" : "Show Exams"}
+              </button>
+            </div>
+
+            {/* Exam List */}
+            {expandedClass === className && (
+              <div className="bg-white border-t border-gray-200">
+                {examsByClass[className].map((exam) => (
+                  <div
+                    key={exam._id}
+                    className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 border-b last:border-b-0"
                   >
-                    {expandedClass === className ? "Hide Exams" : "Show Exams"}
-                  </button>
-                </td>
-              </tr>
-
-              {expandedClass === className && (
-                <tr>
-                  <td colSpan="2" className="p-4 border">
-                    <table className="w-full border border-gray-300">
-                      <thead>
-                        <tr className="bg-gray-200 text-center">
-                          <th className="p-2 border">Subject</th>
-                          <th className="p-2 border">Teacher</th>
-                          <th className="p-2 border">Exam Type</th>
-                          <th className="p-2 border">Date</th>
-                          <th className="p-2 border">Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {examsByClass[className].map((exam) => (
-                          <tr key={exam._id} className="text-center">
-                            <td className="p-2 border">{exam.subjectId?.name}</td>
-                            <td className="p-2 border">{exam.teacherId?.name}</td>
-                            <td className="p-2 border">{exam.examType}</td>
-                            <td className="p-2 border">{exam.examDate}</td>
-                            <td className="p-2 border">{exam.examTime}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              )}
-            </>
-          ))}
-        </tbody>
-      </table>
+                    <div className="mb-1 sm:mb-0">
+                      <span className="font-medium">Subject: </span>
+                      {exam.subjectId?.name || "N/A"}
+                    </div>
+                    <div className="mb-1 sm:mb-0">
+                      <span className="font-medium">Teacher: </span>
+                      {exam.teacherId?.name || "N/A"}
+                    </div>
+                    <div className="mb-1 sm:mb-0">
+                      <span className="font-medium">Exam Type: </span>
+                      {exam.examType}
+                    </div>
+                    <div className="mb-1 sm:mb-0">
+                      <span className="font-medium">Date: </span>
+                      {exam.examDate}
+                    </div>
+                    <div>
+                      <span className="font-medium">Time: </span>
+                      {exam.examTime}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

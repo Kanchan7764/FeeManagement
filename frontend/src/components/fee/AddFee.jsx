@@ -4,7 +4,6 @@ import axios from "axios";
 
 const AddFee = () => {
   const navigate = useNavigate();
-
   const [studentDetails, setStudentDetails] = useState(null);
   const [formData, setFormData] = useState({
     studentId: "",
@@ -16,7 +15,7 @@ const AddFee = () => {
     status: "",
   });
   const [autoFee, setAutoFee] = useState(0);
-  const [successMessage, setSuccessMessage] = useState(null); // ✅ success message
+  const [successMessage, setSuccessMessage] = useState(null);
 
   // Fetch student details
   const handleStudentIdChange = async (e) => {
@@ -51,7 +50,6 @@ const AddFee = () => {
     }
   };
 
-  // Fee Type handler
   const handleFeeType = (e) => {
     const value = e.target.value;
     setFormData((prev) => ({ ...prev, fee: value }));
@@ -84,74 +82,68 @@ const AddFee = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Submit
-  // inside handleSubmit
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!studentDetails) {
-    alert("Please enter a valid Student ID");
-    return;
-  }
+    if (!studentDetails) {
+      alert("Please enter a valid Student ID");
+      return;
+    }
 
-  const payload = {
-    ...formData,
-    studentId: studentDetails._id,
-    classId: studentDetails.classs?._id || "",
+    const payload = {
+      ...formData,
+      studentId: studentDetails._id,
+      classId: studentDetails.classs?._id || "",
+    };
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/fee/add",
+        payload,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+
+      if (res.data.success) {
+        setSuccessMessage({
+          type: "success",
+          text: `✅ Fee assigned successfully to ${studentDetails.userId?.name} with Fee ID ${res.data.newFee.feeId}`,
+        });
+
+        setFormData((prev) => ({
+          ...prev,
+          fee: "",
+          fees: 0,
+          duedate: "",
+          completedDate: "",
+          status: "",
+        }));
+      }
+    } catch (err) {
+      const errorMsg =
+        err.response?.data?.error ||
+        "Failed to add fee. This fee type may already be assigned.";
+      setSuccessMessage({ type: "error", text: `❌ ${errorMsg}` });
+    }
   };
 
-  try {
-    const res = await axios.post(
-      "http://localhost:3000/api/fee/add",
-      payload,
-      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-    );
-
-    if (res.data.success) {
-      setSuccessMessage({
-        type: "success",
-        text: `✅ Fee assigned successfully to ${studentDetails.userId?.name} with Fee ID ${res.data.newFee.feeId}`
-      });
-
-      // Reset fee fields only
-      setFormData((prev) => ({
-        ...prev,
-        fee: "",
-        fees: 0,
-        duedate: "",
-        completedDate: "",
-        status: "",
-      }));
-    }
-  } catch (err) {
-    const errorMsg =
-      err.response?.data?.error ||
-      "Failed to add fee. This fee type may already be assigned.";
-    setSuccessMessage({ type: "error", text: `❌ ${errorMsg}` });
-  }
-};
-
-
   return (
-    <div className="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-md shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Add Fee</h2>
+    <div className="min-h-screen flex justify-center items-start p-4 sm:p-6 bg-gray-100">
+      <div className="w-full max-w-xl md:max-w-3xl bg-white p-6 sm:p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-6 text-center">Add Fee</h2>
 
-      {successMessage && (
-  <div
-    className={`mb-4 p-4 rounded-md ${
-      successMessage.type === "success"
-        ? "bg-green-100 border border-green-400 text-green-800"
-        : "bg-red-100 border border-red-400 text-red-800"
-    }`}
-  >
-    {successMessage.text}
-  </div>
-)}
+        {successMessage && (
+          <div
+            className={`mb-4 p-4 rounded-md ${
+              successMessage.type === "success"
+                ? "bg-green-100 border border-green-400 text-green-800"
+                : "bg-red-100 border border-red-400 text-red-800"
+            }`}
+          >
+            {successMessage.text}
+          </div>
+        )}
 
-
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Student ID input */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">Student ID</label>
             <input
@@ -160,63 +152,57 @@ const handleSubmit = async (e) => {
               value={formData.studentId}
               onChange={handleStudentIdChange}
               placeholder="Enter Student ID"
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               required
             />
           </div>
 
-          {/* Class */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Class</label>
             <input
               type="text"
               value={studentDetails?.classs?.class_name || ""}
               disabled
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-gray-100"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
 
-          {/* Roll Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Roll No</label>
             <input
               type="text"
               value={studentDetails?.rollNo || ""}
               disabled
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-gray-100"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
 
-          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>
             <input
               type="email"
               value={studentDetails?.userId?.email || ""}
               disabled
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md bg-gray-100"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
 
-          {/* Fee Type */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Fee Type</label>
             <select
               name="fee"
               value={formData.fee}
               onChange={handleFeeType}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               required
             >
               <option value="">Select Fee Type</option>
-              {/* <option value="school_fee">School Fee</option> */}
               <option value="hostel_fee">Hostel Fee</option>
               <option value="bus_fee">Bus Fee</option>
               <option value="tuition_fee">Tuition Fee</option>
             </select>
           </div>
 
-          {/* Fees */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Fees (₹)</label>
             <input
@@ -224,35 +210,33 @@ const handleSubmit = async (e) => {
               name="fees"
               value={formData.fees}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               required
             />
-            {/* {autoFee > 0 && (
-              <p className="text-sm text-gray-500 mt-1">💡 Auto-calculated fee: ₹{autoFee}</p>
-            )} */}
           </div>
 
-          {/* Assign Date */}
-          <div>
+          <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-gray-700">Assign Date</label>
             <input
               type="date"
               name="duedate"
               value={formData.duedate}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              className="mt-1 p-2 w-full border border-gray-300 rounded-md"
               required
             />
           </div>
-        </div>
 
-        <button
-          type="submit"
-          className="w-full mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Add Fee
-        </button>
-      </form>
+          <div className="sm:col-span-2">
+            <button
+              type="submit"
+              className="w-full mt-4 sm:mt-6 bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Add Fee
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
