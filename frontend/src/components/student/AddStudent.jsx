@@ -177,6 +177,17 @@ const AddStudent = () => {
               required
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Address</label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address || ""}
+              onChange={handleChange}
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md"
+              required
+            />
+          </div>
 
           {/* Password */}
           <div>
@@ -257,7 +268,7 @@ const AddStudent = () => {
           </div>
 
           {/* Image */}
-          <div className="sm:col-span-2">
+          <div>
             <label className="block text-sm font-medium text-gray-700">Upload Image</label>
             <input
               type="file"

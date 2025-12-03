@@ -13,6 +13,7 @@ export const columns = [
   { name: "Class Name", selector: (row) => row.class_name, width: "100px" },
   { name: "Roll No", selector: (row) => row.rollNo, width: "100px" },
   { name: "DOB", selector: (row) => row.dob, width: "100px" },
+  
   { name: "Action", cell: (row) => row.action },
 ];
 

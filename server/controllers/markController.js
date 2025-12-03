@@ -115,8 +115,6 @@ export const getProgressCard = async (req, res) => {
         message: "Student not found",
       });
     }
-
-    // 2. Fetch marks using studentDetail._id
     const records = await Marks.find({ studentId: studentDetail._id })
       .populate({
         path: "studentId",
@@ -133,7 +131,6 @@ export const getProgressCard = async (req, res) => {
       });
     }
 
-    // 3. Build subject list
     const subjects = records.map((record) => ({
       subject: record.subjectId.name,
       examType: record.examType,
@@ -141,7 +138,6 @@ export const getProgressCard = async (req, res) => {
       totalMarks: record.totalMarks,
     }));
 
-    // 4. Final response
     const response = {
       studentId: studentDetail.studentId,
       name: records[0].studentId.userId.name,  // FIXED

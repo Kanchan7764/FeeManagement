@@ -31,6 +31,26 @@ export default function AddMarksPage() {
     fetchClasses();
   }, []);
 
+const examTotalMarks = {
+  FA1: 10,
+  FA2: 10,
+  FA3: 10,
+  FA4: 10,
+  HalfYearly: 80,
+  Annual: 80,
+};
+
+const handleExamTypeChange = (e) => {
+  const { value } = e.target;
+  setMarksData((prev) => ({
+    ...prev,
+    examType: value,
+    totalMarks: examTotalMarks[value] || "", // auto-update totalMarks
+  }));
+};
+
+
+
   const fetchClasses = async () => {
     try {
       const res = await axios.get("http://localhost:3000/api/class");
@@ -161,16 +181,20 @@ export default function AddMarksPage() {
           <div>
             <label className="block mb-1 font-medium">Exam Type</label>
             <select
-              name="examType"
-              value={marksData.examType}
-              onChange={handleChange}
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="">Select Exam</option>
-              <option value="MidTerm">Mid Term</option>
-              <option value="Final">Final</option>
-              <option value="UnitTest">Unit Test</option>
-            </select>
+  name="examType"
+  value={marksData.examType}
+  onChange={handleExamTypeChange}
+  className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+>
+  <option value="">Select Exam</option>
+  <option value="FA1">FA1</option>
+  <option value="FA2">FA2</option>
+  <option value="FA3">FA3</option>
+  <option value="FA4">FA4</option>
+  <option value="HalfYearly">Half Yearly</option>
+  <option value="Annual">Annual</option>
+</select>
+
           </div>
 
           {/* Marks Obtained */}

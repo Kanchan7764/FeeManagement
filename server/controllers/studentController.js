@@ -121,6 +121,7 @@ const addStudent = async(req, res)=>{
         classs,
         role,
         password,
+        address,
         
     }= req.body
 
@@ -155,6 +156,7 @@ const addStudent = async(req, res)=>{
         phoneNo,
         dob,
         classs,
+        address,
          profileImage: req.file ? req.file.filename : "",
      
     })

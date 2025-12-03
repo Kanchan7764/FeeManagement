@@ -14,6 +14,7 @@ status:{
   dob: { type: Date },
   gender: { type: String },
   classs: { type: Schema.Types.ObjectId, ref: "Class", required: true },
+  address: { type: String },
   createdAt: {
     type: Date,
     default: Date.now,

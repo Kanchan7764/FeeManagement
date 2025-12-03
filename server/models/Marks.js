@@ -21,7 +21,7 @@ const MarksSchema = new mongoose.Schema(
     examType: {
       type: String, 
       required: true, 
-      enum: ["MidTerm", "Final", "UnitTest", "Practical"]
+      enum: ["FA1", "FA2", "HalfYearly", "FA3","FA4","Annual" ]
     },
     marksObtained: {
       type: Number,
